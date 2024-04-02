@@ -11,19 +11,26 @@ const config: PlaywrightTestConfig = {
     ignoreHTTPSErrors: true,
     video: 'off',
     screenshot: 'off',
+    extraHTTPHeaders: {
+      'Authorization': `Token ${process.env.ACCESS_TOKEN}`
+    }
   },
   projects: [
+    { name: 'setup', testMatch: 'auth.setup.ts'},
     {
       name: 'Chromium',
-      use: { browserName: 'chromium' },
+      dependencies: ['setup'],
+      use: { browserName: 'chromium' , storageState: '.auth/user.json'}      
     },
     {
       name: 'Firefox',
-      use: { browserName: 'firefox' },
+      dependencies: ['setup'],
+      use: { browserName: 'firefox' , storageState: '.auth/user.json'}      
     },
     {
       name: 'Webkit',
-      use: { browserName: 'webkit' },
+      dependencies: ['setup'],
+      use: { browserName: 'webkit' , storageState: '.auth/user.json'}      
     },
   ],
 }
